@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoiceScheme AI (योजनामित्र) — AI-Powered Voice Government Scheme Finder</title>
+  <meta name="description"
+    content="Voice-first, multilingual platform to discover government schemes in Marathi, Hindi, and English using deterministic rule-based eligibility and personalized document readiness checklists." />
+
+  <!-- Google Fonts: Inter and Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+
+  <!-- Premium Sticky Navigation Bar -->
+  <header class="app-header" role="banner">
+    <div class="header-container">
+      <div class="brand-block">
+        <div class="emblem-box" aria-hidden="true" title="National Civic Platform">
+          <svg class="emblem-svg" viewBox="0 0 40 40" width="36" height="36" fill="none">
+            <circle cx="20" cy="20" r="18" stroke="#D97706" stroke-width="2" fill="#0B1F3A" />
+            <circle cx="20" cy="20" r="14" stroke="#1D4ED8" stroke-width="1.5" stroke-dasharray="2 2" />
+            <circle cx="20" cy="20" r="5" fill="#D97706" />
+            <path d="M20 7 V33 M7 20 H33 M11 11 L29 29 M11 29 L29 11" stroke="#38BDF8" stroke-width="1" />
+          </svg>
+          <span class="tricolor-badge" title="Government of India / Maharashtra">🇮🇳</span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">
+            <span class="highlight-voice">VoiceScheme</span> <span class="highlight-ai">AI</span>
+            <span class="brand-divider">|</span>
+            <span class="brand-marathi-name">योजनामित्र</span>
+          </div>
+          <p class="brand-sub">AI-Powered Government Scheme Finder • National Public Welfare Gateway</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <!-- Language Switcher -->
+        <div class="language-selector" role="group" aria-label="Language selection">
+          <button class="lang-btn" data-lang="mr" id="lang-mr">मराठी</button>
+          <button class="lang-btn" data-lang="hi" id="lang-hi">हिंदी</button>
+          <button class="lang-btn active" data-lang="en" id="lang-en">English</button>
+        </div>
+
+        <!-- Auth / User Credentials Widget -->
+        <div id="auth-header-widget" class="auth-header-widget">
+          <button id="open-auth-btn" class="header-btn btn-auth" title="Sign In or Register to save your profile & documents">
+            <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span id="auth-btn-label" data-i18n="nav_login">Sign In / Login</span>
+          </button>
+          <div id="user-badge-container" class="user-badge-container" style="display: none;">
+            <div class="user-pill" id="user-pill" title="Active Citizen Profile">
+              <span class="user-avatar-icon">👤</span>
+              <span class="user-pill-name" id="user-pill-name">Citizen</span>
+            </div>
+            <button id="manual-save-btn" class="header-btn btn-save" title="Save your profile & document checklist">
+              <span>💾</span> <span data-i18n="btn_save">Save</span>
+            </button>
+            <button id="logout-btn" class="header-btn btn-logout" title="Logout">
+              <span data-i18n="btn_logout">Logout</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Header Buttons -->
+        <button id="print-summary-btn" class="header-btn btn-accent" title="Print Scheme Summary Slip">
+          <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          <span data-i18n="btn_print">Print / PDF</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-layout" role="main">
+
+    <!-- Hero / Intro Banner -->
+    <section class="hero-section">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-eyebrow-wrapper">
+            <span class="badge-pill-glow">AI-POWERED • VOICE-FIRST • MULTILINGUAL</span>
+            <span class="hero-status-pill">● Deterministic Rule Engine</span>
+          </div>
+          <h1 class="hero-title" data-i18n="hero_title">
+            शासकीय योजना आता तुमच्या हक्काच्या — बोलून शोधा!
+          </h1>
+          <p class="hero-subtitle" data-i18n="hero_subtitle">
+            शेतकरी, महिला, विद्यार्थी व मजुरांसाठी केंद्र व महाराष्ट्र शासनाच्या सर्व कल्याणकारी योजनांची खात्रीशीर माहिती.
+          </p>
+
+          <!-- Trust Row -->
+          <div class="hero-trust-row">
+            <div class="trust-item">
+              <span class="trust-icon">✓</span>
+              <span class="trust-label" data-i18n="trust_verified">Verified Scheme Rules</span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-icon">✓</span>
+              <span class="trust-label" data-i18n="trust_multilingual">Marathi • Hindi • English</span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-icon">✓</span>
+              <span class="trust-label" data-i18n="trust_privacy">Privacy First</span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-icon">✓</span>
+              <span class="trust-label" data-i18n="trust_no_aadhaar">No Aadhaar Storage</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Test Personas (TRD Section 5) -->
+        <div class="personas-wrapper" id="personas-wrapper">
+          <div class="personas-header-line">
+            <span class="sparkle-icon">✨</span>
+            <span class="personas-label" data-i18n="try_persona">डेमो व्यक्ती निवडा (त्वरित चाचणी):</span>
+          </div>
+          <div class="personas-grid" id="personas-container">
+            <!-- Dynamic Persona Cards injected by app.js -->
+          </div>
+        </div>
+
+        <!-- Logged-in Citizen Account Card -->
+        <div class="citizen-account-card" id="citizen-account-card" style="display: none;">
+          <div class="citizen-card-badge">
+            <span class="status-indicator-dot">●</span>
+            <span data-i18n="citizen_active_profile">Active Citizen Profile</span>
+          </div>
+          <div class="citizen-card-content">
+            <div class="citizen-avatar-box">
+              <span class="citizen-avatar-emoji">👤</span>
+            </div>
+            <div class="citizen-details-col">
+              <h2 class="citizen-name" id="citizen-card-name">Citizen Profile</h2>
+              <div class="citizen-meta-grid">
+                <div class="citizen-meta-item">
+                  <span class="citizen-meta-icon">📞</span>
+                  <span class="citizen-meta-label" data-i18n="auth_lbl_phone">Phone:</span>
+                  <strong class="citizen-meta-value" id="citizen-card-phone">—</strong>
+                </div>
+                <div class="citizen-meta-item">
+                  <span class="citizen-meta-icon">✉️</span>
+                  <span class="citizen-meta-label" data-i18n="auth_lbl_email">Email:</span>
+                  <strong class="citizen-meta-value" id="citizen-card-email">—</strong>
+                </div>
+                <div class="citizen-meta-item">
+                  <span class="citizen-meta-icon">📍</span>
+                  <span class="citizen-meta-label" data-i18n="auth_lbl_address">Address:</span>
+                  <strong class="citizen-meta-value" id="citizen-card-address">—</strong>
+                </div>
+              </div>
+            </div>
+            <div class="citizen-actions-col">
+              <button type="button" id="btn-citizen-logout" class="btn-citizen-action btn-citizen-logout" title="Logout">
+                <span>🚪</span> <span data-i18n="btn_logout">Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- User Session & Save Status Banner -->
+    <div id="user-session-banner" class="user-session-banner">
+      <div class="session-banner-inner">
+        <span class="session-status-dot" id="session-status-dot">●</span>
+        <span id="session-banner-text" class="session-banner-text" data-i18n="guest_banner_text">
+          💡 Guest Mode: Sign In to save your eligibility profile &amp; document checklist across sessions.
+        </span>
+        <button id="banner-action-btn" class="session-banner-btn">🔑 <span data-i18n="nav_login">Sign In</span></button>
+      </div>
+    </div>
+
+    <!-- Voice Centerpiece & Conversational Section -->
+    <section class="voice-interaction-card">
+      <div class="voice-search-split">
+        <!-- LEFT: Microphone & Voice Status -->
+        <div class="voice-action-center">
+          <div class="mic-button-wrapper">
+            <div class="soundwave-ring"></div>
+            <button id="mic-button" class="mic-btn" aria-label="Start Voice Recording"
+              title="Click to speak in your language">
+              <svg class="mic-icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="22"></line>
+                <line x1="8" y1="22" x2="16" y2="22"></line>
+              </svg>
+            </button>
+          </div>
+
+          <div class="mic-status-container">
+            <p id="mic-status-hint" class="mic-hint" data-i18n="mic_idle_hint">
+              माइकवर टॅप करा आणि आपली परिस्थिती बोला
+            </p>
+            <span class="mic-subhint">Marathi • Hindi • English spoken voice supported</span>
+          </div>
+
+          <!-- Professional Audio Visualizer Waveform -->
+          <div id="audio-visualizer" class="audio-waves" aria-hidden="true">
+            <span class="bar bar-1"></span>
+            <span class="bar bar-2"></span>
+            <span class="bar bar-3"></span>
+            <span class="bar bar-4"></span>
+            <span class="bar bar-5"></span>
+            <span class="bar bar-6"></span>
+            <span class="bar bar-7"></span>
+          </div>
+        </div>
+
+        <!-- RIGHT: Spoken Query Guidance Panel -->
+        <div class="voice-guide-panel">
+          <div class="guide-header">
+            <span class="guide-tag">💡 Spoken Voice Guidance</span>
+            <h3 class="guide-title" data-i18n="voice_guide_title">कसे बोलायचे? (उदाहरणे):</h3>
+            <p class="guide-desc">खालीलपैकी कोणत्याही उदाहरणावर टॅप करा किंवा आपल्या शब्दात बोला:</p>
+          </div>
+
+          <div class="voice-sample-pills">
+            <button class="voice-sample-pill" data-query="मी रायगडची ५२ वर्षांची शेतकरी महिला आहे. वार्षिक उत्पन्न ८०,००० असून जमीन आहे.">
+              <span class="sample-lang-tag">मराठी</span>
+              <span class="sample-text">"मी रायगडची ५२ वर्षांची शेतकरी महिला आहे..."</span>
+              <span class="sample-arrow">→</span>
+            </button>
+            <button class="voice-sample-pill" data-query="मैं पुणे का 38 वर्षीय निर्माण मजदूर हूँ, सालाना आय 1.20 लाख है। मुझे आवास व बीमा चाहिए।">
+              <span class="sample-lang-tag">हिंदी</span>
+              <span class="sample-text">"मैं पुणे का ३८ वर्षीय मजदूर हूँ, पक्का मकान चाहिए..."</span>
+              <span class="sample-arrow">→</span>
+            </button>
+            <button class="voice-sample-pill" data-query="I am a 19 year old college student from Kolhapur belonging to SC category with family income 1.5 Lakh.">
+              <span class="sample-lang-tag">English</span>
+              <span class="sample-text">"I am a student looking for higher education scholarships..."</span>
+              <span class="sample-arrow">→</span>
+            </button>
+          </div>
+
+          <div class="guide-footer-badges">
+            <span class="support-lang-badge">मराठी (महाराष्ट्र)</span>
+            <span class="support-lang-badge">हिन्दी (भारत)</span>
+            <span class="support-lang-badge">Indian English</span>
+            <span class="support-lang-badge">Zero Hallucination Rules</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Large AI Command / Text Search Input Bar -->
+      <div class="input-fallback-row">
+        <div class="input-box-wrapper" id="input-box-wrapper">
+          <span class="search-command-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input type="text" id="user-text-input" class="text-input-field"
+            placeholder="किंवा येथे टाइप करा: उदा. 'मी रायगडची शेतकरी महिला असून वय ५२ वर्षे आहे...'"
+            aria-label="User situation description" />
+          <button id="send-query-btn" class="send-btn" data-i18n="send_btn">
+            शोध घ्या ➔
+          </button>
+        </div>
+        <div id="input-warning-banner" class="input-warning-banner" style="display: none;" role="alert"
+          aria-live="polite">
+          <span class="warning-icon">⚠️</span>
+          <span id="input-warning-text" class="warning-text"></span>
+          <button id="close-warning-btn" class="close-warning-btn" aria-label="Dismiss warning"
+            title="Dismiss">✕</button>
+        </div>
+      </div>
+
+      <!-- Conversational Slot Extraction Transcript Timeline -->
+      <div class="chat-transcript-area">
+        <div class="transcript-header">
+          <div class="transcript-title-group">
+            <span class="transcript-icon">🗣️</span>
+            <span class="transcript-title">संभाषण व उत्तरे (Dialogue Log)</span>
+          </div>
+          <span class="transcript-subtext">AI-assisted slot filling & multi-turn clarification</span>
+        </div>
+        <div id="chat-history" class="chat-history-container">
+          <!-- Chat messages dynamically rendered -->
+        </div>
+      </div>
+
+      <!-- Extracted Citizen Profile Snapshot (PRD F4) -->
+      <div class="profile-ribbon-card">
+        <div class="profile-ribbon-header">
+          <div class="ribbon-title-box">
+            <span class="icon-tag">📋</span>
+            <div class="ribbon-title-text">
+              <strong data-i18n="profile_summary_title">तुमची नोंदवलेली माहिती (प्रोफाइल):</strong>
+              <span class="discreet-tip">बदल करण्यासाठी पुन्हा बोला, टाइप करा किंवा कार्डावर क्लिक करा</span>
+            </div>
+          </div>
+          <div class="profile-header-actions">
+            <div class="profile-completeness-wrapper" title="Required profile attributes captured">
+              <span class="completeness-label">पूर्णता:</span>
+              <div class="completeness-bar-bg">
+                <div id="profile-completeness-fill" class="completeness-bar-fill" style="width: 0%;"></div>
+              </div>
+              <span id="profile-completeness-text" class="completeness-percent">0%</span>
+            </div>
+            <button id="reset-profile-btn" class="reset-btn" title="Reset profile and start new search">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+              <span data-i18n="reset_btn">नवीन शोध / रीसेट</span>
+            </button>
+          </div>
+        </div>
+        <div id="profile-badges" class="profile-badges-row">
+          <!-- Badges dynamically rendered -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Schemes Results Section -->
+    <section class="results-section">
+      <div class="results-header-bar">
+        <div class="results-title-group">
+          <div class="results-title-badge-row">
+            <span class="results-main-badge">🏛️ Verified Welfare Directory</span>
+            <span class="sub-rule-text">⚡ निश्चित नियम इंजिन (Deterministic Rule Engine)</span>
+          </div>
+          <h2 class="results-heading">
+            <span id="eligible-count-number" class="count-pill">0</span>
+            <span data-i18n="schemes_count">पात्र व शिफारस केलेल्या योजना</span>
+          </h2>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs-row" role="tablist">
+          <button class="filter-tab active" data-filter="all" data-i18n="filter_all">सर्व योजना</button>
+          <button class="filter-tab" data-filter="high" data-i18n="filter_high">उच्च पात्रता (100%)</button>
+          <button class="filter-tab" data-filter="state" data-i18n="filter_state">महाराष्ट्र शासन</button>
+          <button class="filter-tab" data-filter="central" data-i18n="filter_central">केंद्र शासन</button>
+        </div>
+      </div>
+
+      <!-- Schemes List Grid -->
+      <div id="schemes-container" class="schemes-grid">
+        <!-- Cards dynamically injected -->
+      </div>
+    </section>
+
+    <!-- Citizen Safety & DPDP Disclaimer Footer -->
+    <footer class="app-footer" role="contentinfo">
+      <div class="footer-card">
+        <div class="footer-top-row">
+          <div class="compliance-badge">
+            <span class="shield-icon">🛡️</span>
+            <strong>DPDP Act 2023 Compliant</strong>: शून्य आधार / बँक माहिती साठवणूक (Zero Aadhaar / Account numbers retained).
+          </div>
+          <div class="footer-secure-tag">🔒 End-to-End Client Evaluation</div>
+        </div>
+        <p class="disclaimer-text" data-i18n="disclaimer">
+          सूचना: हे मार्गदर्शन प्राथमिक माहितीवर आधारित आहे. अंतिम मंजुरी शासकीय अधिकाऱ्यांच्या पडताळणीवर अवलंबून असते.
+        </p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Personalized Document Checklist & Rescue Modal (PRD F9 & TRD Standout) -->
+  <dialog id="doc-modal" class="custom-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <div>
+          <span class="dialog-badge">Personalized Document Readiness</span>
+          <h3 id="doc-modal-scheme-name" class="dialog-title">Scheme Documents</h3>
+          <p class="dialog-subtitle" data-i18n="doc_modal_subtitle">
+            जाँचें कौन से दस्तावेज आपके पास हैं और छूटे हुए दस्तावेज कहाँ से प्राप्त करें।
+          </p>
+        </div>
+        <button id="close-doc-btn" class="dialog-close-btn" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="dialog-body">
+        <!-- Checklist Section -->
+        <div class="modal-section">
+          <h4 class="section-title">✅ <span data-i18n="required_docs">आवश्यक कागदपत्रे:</span></h4>
+          <div id="doc-checklist-container" class="doc-checklist-grid">
+            <!-- Checkboxes injected -->
+          </div>
+        </div>
+
+        <!-- Missing Documents Rescue Guide (Standout feature) -->
+        <div class="modal-section" id="doc-rescue-guide-container">
+          <!-- Dynamic rescue guidance injected -->
+        </div>
+
+        <!-- Near Me CSC & Aaple Sarkar Centers (PRD F12) -->
+        <div class="modal-section">
+          <h4 class="section-title">📍 <span data-i18n="near_me_title">तुमच्या नजीकचे आपले सरकार / ग्राहक सेवा केंद्र (CSC):</span></h4>
+          <div id="near-centers-list" class="centers-grid">
+            <!-- Center cards injected -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Dedicated Scheme Q&A Modal (Amazon Bedrock RAG / Verified FAQs) -->
+  <dialog id="qa-modal" class="custom-dialog qa-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <div>
+          <span class="dialog-badge">💡 Verified Scheme Guidelines & FAQs</span>
+          <h3 id="qa-modal-scheme-name" class="dialog-title">Scheme Q&A</h3>
+          <p id="qa-modal-subtitle" class="dialog-subtitle">
+            अधिकृत शासन निर्णयानुसार (GR) वारंवार विचारले जाणारे प्रश्न व उत्तरे.
+          </p>
+        </div>
+        <button id="close-qa-btn" class="dialog-close-btn" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="modal-section">
+          <div id="qa-modal-faq-container" class="qa-container">
+            <!-- FAQs injected -->
+          </div>
+        </div>
+
+        <div class="modal-section" id="qa-modal-ask-container">
+          <!-- Dynamic Ask Question box injected -->
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Citizen Login & User Data Vault Modal -->
+  <dialog id="auth-modal" class="custom-dialog auth-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <div>
+          <span class="dialog-badge">🔒 Citizen Data Vault • Save Profile & Docs</span>
+          <h3 id="auth-modal-title" class="dialog-title" data-i18n="auth_modal_title">Citizen Login & Data Vault</h3>
+          <p id="auth-modal-subtitle" class="dialog-subtitle" data-i18n="auth_modal_subtitle">
+            Sign in to save your eligibility profile, document checklist, and matched schemes across visits.
+          </p>
+        </div>
+        <button id="close-auth-btn" class="dialog-close-btn" aria-label="Close modal" type="button">✕</button>
+      </div>
+
+      <div class="dialog-body">
+        <!-- STEP 1: Language Selection First (as required) -->
+        <div class="auth-lang-selector-box">
+          <div class="auth-step-badge">
+            <span class="step-num">1</span>
+            <span class="step-text" id="auth-lang-step-text" data-i18n="auth_lang_step">Step 1: Choose Your Language / भाषा निवडा / भाषा चुनें</span>
+          </div>
+          <div class="auth-lang-buttons" role="group" aria-label="Modal language selection">
+            <button type="button" class="auth-lang-btn active" data-lang="en">🇬🇧 English</button>
+            <button type="button" class="auth-lang-btn" data-lang="hi">🇮🇳 हिन्दी (Hindi)</button>
+            <button type="button" class="auth-lang-btn" data-lang="mr">🚩 मराठी (Marathi)</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Citizen Details Header & Tabs -->
+        <div class="auth-tabs" role="tablist">
+          <button type="button" id="tab-auth-login" class="auth-tab active" data-mode="login" data-i18n="auth_tab_login">Sign In</button>
+          <button type="button" id="tab-auth-register" class="auth-tab" data-mode="register" data-i18n="auth_tab_register">Create Account</button>
+        </div>
+
+        <!-- Auth Form: Name, Phone No., Email, Address, Password -->
+        <form id="auth-form" class="auth-form" novalidate onsubmit="return false;">
+          <!-- Registration Fields -->
+          <div id="auth-name-group" class="auth-form-group" style="display: none;">
+            <label for="auth-name" class="auth-field-label">
+              <span data-i18n="auth_lbl_name">Full Name</span> <span class="required-star">*</span>
+            </label>
+            <input type="text" id="auth-name" class="auth-input" placeholder="Enter your full name" autocomplete="name" />
+          </div>
+
+          <div id="auth-phone-group" class="auth-form-group" style="display: none;">
+            <label for="auth-phone" class="auth-field-label">
+              <span data-i18n="auth_lbl_phone">Phone Number</span> <span class="required-star">*</span>
+            </label>
+            <input type="tel" id="auth-phone" class="auth-input" placeholder="Enter 10-digit mobile number" autocomplete="tel" />
+          </div>
+
+          <div id="auth-email-group" class="auth-form-group" style="display: none;">
+            <label for="auth-email" class="auth-field-label">
+              <span data-i18n="auth_lbl_email">Email Address</span> <span class="required-star">*</span>
+            </label>
+            <input type="email" id="auth-email" class="auth-input" placeholder="Enter your email address" autocomplete="email" />
+          </div>
+
+          <div id="auth-address-group" class="auth-form-group" style="display: none;">
+            <label for="auth-address" class="auth-field-label">
+              <span data-i18n="auth_lbl_address">Address (Village / City / District)</span> <span class="required-star">*</span>
+            </label>
+            <input type="text" id="auth-address" class="auth-input" placeholder="Village / City, Taluka, District" autocomplete="street-address" />
+          </div>
+
+          <!-- Sign-In Identity Field (Phone or Email) -->
+          <div id="auth-login-identifier-group" class="auth-form-group">
+            <label for="auth-username" class="auth-field-label">
+              <span id="auth-username-label" data-i18n="auth_lbl_signin_id">Phone Number or Email</span> <span class="required-star">*</span>
+            </label>
+            <input type="text" id="auth-username" class="auth-input" placeholder="Enter registered mobile or email" autocomplete="username" />
+          </div>
+
+          <!-- Password / PIN -->
+          <div class="auth-form-group">
+            <label for="auth-password" class="auth-field-label">
+              <span data-i18n="auth_lbl_password">Password or 4-digit PIN</span> <span class="required-star">*</span>
+            </label>
+            <input type="password" id="auth-password" class="auth-input" placeholder="Enter password or 4-digit PIN" autocomplete="current-password" />
+          </div>
+
+          <div id="auth-feedback-msg" class="auth-feedback-msg" style="display: none;"></div>
+
+          <button type="button" id="auth-submit-btn" class="auth-submit-btn">
+            <span id="auth-submit-text" data-i18n="auth_btn_login">Sign In & Load Data</span>
+          </button>
+
+          <div class="auth-switch-box">
+            <button type="button" id="auth-switch-mode-btn" class="auth-switch-link" data-i18n="auth_switch_to_register">
+              Don't have an account? Register here →
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Load Application Controller (ES Module) -->
+  <script type="module" src="app.js"></script>
+
+</body>
+
+</html>
