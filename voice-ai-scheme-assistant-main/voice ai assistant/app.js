@@ -1233,7 +1233,7 @@ function highlightSchemeCard(schemeId) {
   }
 }
 
-function processUserQuery(text) {
+async function processUserQuery(text) {
   // Clear the input field after sending
   const textInput = document.getElementById('user-text-input');
   if (textInput) textInput.value = '';
@@ -1251,8 +1251,8 @@ function processUserQuery(text) {
     });
   }
 
-  // Extract slots with normalized Devanagari and intent/relevance checks
-  const extraction = dialogueManager.extractSlots(text, state.currentProfile, state.currentLang);
+  // Extract slots with normalized Devanagari and intent/relevance checks (AWS Bedrock + Local Engine)
+  const extraction = await dialogueManager.extractSlotsWithAWS(text, state.currentProfile, state.currentLang);
 
   // 1. Check if input is unrelated / unrecognized (warn user as requested)
   if (!extraction.isRelevant) {
