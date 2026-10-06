@@ -1,0 +1,10 @@
+{
+  "name": "voicescheme-ai-root",
+  "version": "1.0.0",
+  "description": "VoiceScheme AI root entrypoint",
+  "main": "voice-ai-scheme-assistant-main/voice ai assistant/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node \"voice-ai-scheme-assistant-main/voice ai assistant/server.js\""
+  }
+}
