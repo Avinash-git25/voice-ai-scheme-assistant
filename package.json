@@ -1,10 +1,22 @@
 {
-  "name": "voicescheme-ai-root",
+  "name": "voicescheme-ai",
   "version": "1.0.0",
-  "description": "VoiceScheme AI root entrypoint",
-  "main": "voice-ai-scheme-assistant-main/voice ai assistant/server.js",
+  "description": "AI-Powered Voice-First Government Scheme Finder (TRD/PRD Prototype)",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node \"voice-ai-scheme-assistant-main/voice ai assistant/server.js\""
-  }
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "voice-scheme-ai",
+    "yojanamitra",
+    "aws-hackathon",
+    "government-schemes",
+    "marathi",
+    "hindi",
+    "voice-first"
+  ],
+  "author": "VoiceScheme AI Team",
+  "license": "MIT"
 }
