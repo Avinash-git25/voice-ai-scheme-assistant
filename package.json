@@ -2,11 +2,10 @@
   "name": "voicescheme-ai",
   "version": "1.0.0",
   "description": "AI-Powered Voice-First Government Scheme Finder (TRD/PRD Prototype)",
-  "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
+    "dev": "node dev-server.js",
+    "start": "node dev-server.js"
   },
   "keywords": [
     "voice-scheme-ai",
