@@ -76,11 +76,51 @@ async function fetchGoogleTTSChunk(chunk, lang) {
   return Buffer.from(arrayBuf);
 }
 
+const AWS_LAMBDA_URL = process.env.AWS_LAMBDA_URL || 'https://3hepd6fwqnejouzr4jxfwxk2cu0shvee.lambda-url.us-east-1.on.aws';
+
 const server = http.createServer(async (req, res) => {
   const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   const pathname = parsedUrl.pathname;
 
-  // Handle Text-To-Speech Endpoint
+  // Handle AWS Cloud Health / Status Endpoint
+  if (pathname === '/api/aws-status') {
+    try {
+      const awsRes = await fetch(`${AWS_LAMBDA_URL}/health`);
+      const awsData = await awsRes.json();
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ status: 'connected', aws: awsData, lambdaUrl: AWS_LAMBDA_URL }));
+      return;
+    } catch (e) {
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ status: 'offline', error: e.message, lambdaUrl: AWS_LAMBDA_URL }));
+      return;
+    }
+  }
+
+  // Handle AWS Bedrock Slot Extraction Proxy
+  if (pathname === '/api/extract-slots' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const awsRes = await fetch(`${AWS_LAMBDA_URL}/extract-slots`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: body
+        });
+        const awsData = await awsRes.json();
+        res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify(awsData));
+      } catch (err) {
+        console.warn('AWS extract-slots proxy error:', err.message);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // Handle Text-To-Speech Endpoint (AWS Polly + Native Vernacular Fallback)
   if (pathname === '/api/tts') {
     const text = parsedUrl.searchParams.get('text');
     const lang = parsedUrl.searchParams.get('lang') || 'mr';
@@ -89,6 +129,31 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(400, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Missing text parameter' }));
       return;
+    }
+
+    // Try Amazon Polly for Hindi/English or when requested
+    if (lang === 'hi' || lang === 'en') {
+      try {
+        const pollyRes = await fetch(`${AWS_LAMBDA_URL}/tts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, lang })
+        });
+        const pollyData = await pollyRes.json();
+        if (pollyData && pollyData.audioBase64) {
+          const audioBuf = Buffer.from(pollyData.audioBase64, 'base64');
+          res.writeHead(200, {
+            'Content-Type': 'audio/mpeg',
+            'Content-Length': audioBuf.length,
+            'Cache-Control': 'public, max-age=86400',
+            'Access-Control-Allow-Origin': '*'
+          });
+          res.end(audioBuf);
+          return;
+        }
+      } catch (pollyErr) {
+        console.warn('Polly error, falling back to local TTS engine:', pollyErr.message);
+      }
     }
 
     try {

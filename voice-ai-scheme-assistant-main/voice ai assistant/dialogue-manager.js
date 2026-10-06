@@ -568,4 +568,49 @@ export class DialogueManager {
 
     return questions[firstMissing]?.[lang] || questions[firstMissing]?.en || null;
   }
+
+  /**
+   * Hybrid AWS Bedrock + Local Deterministic Slot Extractor
+   * Queries AWS Lambda /api/extract-slots and saves session to Amazon DynamoDB
+   */
+  async extractSlotsWithAWS(text, currentProfile = {}, lang = 'mr', sessionId = 'session-' + Date.now()) {
+    const localResult = this.extractSlots(text, currentProfile, lang);
+    try {
+      const response = await fetch('/api/extract-slots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, lang, sessionId })
+      });
+      if (response.ok) {
+        const awsData = await response.json();
+        if (awsData && awsData.slots) {
+          const s = awsData.slots;
+          if (s.age && !localResult.updatedProfile.age) {
+            localResult.updatedProfile.age = s.age;
+            localResult.newlyExtracted.age = s.age;
+          }
+          if (s.gender && !localResult.updatedProfile.gender) {
+            localResult.updatedProfile.gender = s.gender;
+            localResult.newlyExtracted.gender = s.gender;
+          }
+          if (s.income && !localResult.updatedProfile.annual_income) {
+            localResult.updatedProfile.annual_income = s.income;
+            localResult.newlyExtracted.annual_income = s.income;
+          }
+          if (s.isFarmer && !localResult.updatedProfile.occupation) {
+            localResult.updatedProfile.occupation = 'farmer';
+            localResult.newlyExtracted.occupation = 'farmer';
+          }
+          if (s.hasLand !== null && s.hasLand !== undefined && localResult.updatedProfile.land_owner === undefined) {
+            localResult.updatedProfile.land_owner = s.hasLand;
+            localResult.newlyExtracted.land_owner = s.hasLand;
+          }
+          localResult.awsSlots = s;
+        }
+      }
+    } catch (e) {
+      console.warn("AWS Bedrock extract-slots notice, using local rule engine:", e);
+    }
+    return localResult;
+  }
 }
