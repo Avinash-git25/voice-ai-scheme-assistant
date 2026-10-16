@@ -1,4 +1,4 @@
-# VoiceScheme AI (योजनामित्र) — Prototype
+# VoiceScheme AI (योजनामित्र) — 
 
 **AI-Powered Voice-First Government Scheme Finder**  
 *Built for AWS College Hackathon & Citizen Tech Innovation*  
